@@ -3,6 +3,7 @@ const { Client, Collection } = require('discord.js');
 const fs = require('fs');
 const path = require('path');
 const query = require('./utils/mysql').query;
+const queries = require('./utils/mysql-queries');
 
 const commands = new Collection();
 
@@ -46,9 +47,11 @@ client.once('ready', async () => {
 
 client.on('interactionCreate', async (inteaction) => {
   if (inteaction.isChatInputCommand()) {
-    const { commandName } = inteaction;
+    const { user, commandName } = inteaction;
 
     const command = commands.get(commandName);
+
+    await queries.createUser(user.id);
 
     await command.run(client, inteaction);
   }
