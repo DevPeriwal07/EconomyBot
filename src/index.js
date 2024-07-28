@@ -2,6 +2,7 @@ require('dotenv/config');
 const { Client, Collection } = require('discord.js');
 const fs = require('fs');
 const path = require('path');
+const query = require('./utils/mysql').query;
 
 const commands = new Collection();
 
@@ -31,9 +32,16 @@ client.once('ready', async () => {
 
   await client.application.commands.set(globalCommands);
 
-  client.guilds.fetch(process.env.GUILD_ID).then((guild) => {
+  await client.guilds.fetch(process.env.GUILD_ID).then((guild) => {
     guild.commands.set(privateCommands);
   });
+
+  // Run SQL Statement
+  const sql = fs.readFileSync(
+    path.join(__dirname, 'tables', 'database.sql'),
+    'utf-8',
+  );
+  await query(sql);
 });
 
 client.on('interactionCreate', async (inteaction) => {
