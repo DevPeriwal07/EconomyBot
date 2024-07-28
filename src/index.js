@@ -55,6 +55,10 @@ client.on('interactionCreate', async (inteaction) => {
     await queries.createUser(user.id);
 
     await command.run(client, inteaction);
+
+    await query('UPDATE users SET commandsRan = commandsRan + 1 WHERE id = ?', [
+      user.id,
+    ]);
   }
 });
 
