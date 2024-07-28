@@ -34,7 +34,10 @@ module.exports = {
     const data = [
       { column: 'Uptime', value: formatDuration(client.uptime) },
       { column: 'Total User Count', value: userCount.toLocaleString() },
-      { column: 'Total Commands Ran', value: commandCount.toLocaleString() },
+      {
+        column: 'Total Commands Ran',
+        value: (Number(commandCount) + 1).toLocaleString(),
+      },
     ];
 
     const embed = new EmbedBuilder()
