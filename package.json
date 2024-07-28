@@ -1,0 +1,21 @@
+{
+  "name": "economy-bot-v2",
+  "version": "1.0.0",
+  "description": "Remake of my original economy-bot project but more simpler",
+  "main": "./src/index.js",
+  "scripts": {
+    "dev": "nodemon ./src/index.js"
+  },
+  "keywords": [
+    "discord"
+  ],
+  "author": "DevPeriwal",
+  "license": "MIT",
+  "dependencies": {
+    "discord.js": "^14.15.3",
+    "dotenv": "^16.4.5"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.4"
+  }
+}
