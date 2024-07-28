@@ -10,6 +10,10 @@ Remake of my original economy-bot project but more simpler
 ```properties
 TOKEN=
 GUILD_ID=
+MYSQL_HOST=
+MYSQL_USER=
+MYSQL_PASSWORD=
+MYSQL_DATABASE=
 ```
 
 Then run
