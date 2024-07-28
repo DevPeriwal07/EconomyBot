@@ -1,5 +1,5 @@
 const query = require('../utils/mysql').query;
-const { EmbedBuilder, SlashCommandBuilder } = require('discord.js');
+const { EmbedBuilder, SlashCommandBuilder, codeBlock } = require('discord.js');
 
 const formatDuration = (ms) => {
   if (ms < 0) ms = -ms;
@@ -31,19 +31,35 @@ module.exports = {
       'SELECT SUM(commandsRan) AS commandCount FROM users;',
     );
 
+    const data = [
+      { column: 'Uptime', value: formatDuration(client.uptime) },
+      { column: 'Total User Count', value: userCount.toLocaleString() },
+      { column: 'Total Commands Ran', value: commandCount.toLocaleString() },
+    ];
+
     const embed = new EmbedBuilder()
       .setAuthor({
         name: `${client.user.displayName}'s Stats`,
         iconURL: client.user.displayAvatarURL(),
       })
-      .setDescription(
-        `**Uptime:** ${formatDuration(client.uptime)}\n` +
-          `**Total User Count:** ${userCount.toLocaleString()}\n` +
-          `**Total Commands Ran:** ${commandCount.toLocaleString()}`,
-      )
+      .setDescription(codeBlock(generateTable(data)))
       .setColor('Random')
       .setTimestamp();
 
     await interaction.reply({ embeds: [embed] });
   },
 };
+
+function generateTable(data) {
+  const maxColumnLength = Math.max(...data.map((row) => row.column.length));
+  const maxValueLength = Math.max(...data.map((row) => row.value.length));
+
+  let tableString = '';
+  data.forEach((row) => {
+    const columnPadding = ' '.repeat(maxColumnLength - row.column.length);
+    const valuePadding = ' '.repeat(maxValueLength - row.value.length);
+    tableString += `${row.column}${columnPadding} : ${row.value}${valuePadding}\n`;
+  });
+
+  return tableString;
+}
