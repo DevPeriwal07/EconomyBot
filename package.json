@@ -4,6 +4,7 @@
   "description": "Remake of my original economy-bot project but more simpler",
   "main": "./src/index.js",
   "scripts": {
+    "start": "node ./src/index.js",
     "dev": "nodemon ./src/index.js"
   },
   "keywords": [
