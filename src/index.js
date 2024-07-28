@@ -5,11 +5,11 @@ const path = require('path');
 const query = require('./utils/mysql').query;
 const queries = require('./utils/mysql-queries');
 
-const commands = new Collection();
-
 const client = new Client({
   intents: 'Guilds',
 });
+
+client.commands = new Collection();
 
 client.once('ready', async () => {
   console.log('The client is ready!');
@@ -19,15 +19,15 @@ client.once('ready', async () => {
   fs.readdirSync(commandsPath).forEach((filePath) => {
     const command = require(path.join(commandsPath, filePath));
 
-    commands.set(command.data.name, command);
+    client.commands.set(command.data.name, command);
   });
 
   // Set slash commands
-  const globalCommands = Array.from(commands.values())
+  const globalCommands = Array.from(client.commands.values())
     .filter((c) => !c?.options?.private)
     .map((c) => c.data.toJSON());
 
-  const privateCommands = Array.from(commands.values())
+  const privateCommands = Array.from(client.commands.values())
     .filter((c) => c?.options?.private)
     .map((c) => c.data.toJSON());
 
@@ -49,7 +49,7 @@ client.on('interactionCreate', async (inteaction) => {
   if (inteaction.isChatInputCommand()) {
     const { user, commandName } = inteaction;
 
-    const command = commands.get(commandName);
+    const command = client.commands.get(commandName);
 
     // create a user account
     await queries.createUser(user.id);

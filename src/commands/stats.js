@@ -31,7 +31,6 @@ module.exports = {
       'SELECT SUM(commandsRan) AS commandCount FROM users;',
     );
 
-    console.log(userCount);
     const embed = new EmbedBuilder()
       .setAuthor({
         name: `${client.user.displayName}'s Stats`,
