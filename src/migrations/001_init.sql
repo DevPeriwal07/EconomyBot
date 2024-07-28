@@ -1,0 +1,6 @@
+CREATE TABLE users (
+    id VARCHAR(25) PRIMARY KEY,
+    coins BIGINT DEFAULT 100000,
+    bank BIGINT DEFAULT 0,
+    bankSpace BIGINT DEFAULT 100000
+);

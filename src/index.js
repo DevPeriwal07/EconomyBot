@@ -37,12 +37,27 @@ client.once('ready', async () => {
     guild.commands.set(privateCommands);
   });
 
-  // Run SQL Statement
-  const sql = fs.readFileSync(
-    path.join(__dirname, 'tables', 'database.sql'),
-    'utf-8',
+  // MySQL Migrations
+  await query(
+    `CREATE TABLE IF NOT EXISTS _migrations (id VARCHAR(255) PRIMARY KEY);`,
   );
-  await query(sql);
+
+  const migrationsPath = path.join(__dirname, 'migrations');
+  fs.readdirSync(migrationsPath).forEach(async (file) => {
+    const filePath = path.join(migrationsPath, file);
+
+    const [res] = await query('SELECT * FROM _migrations WHERE id = ?', [
+      filePath,
+    ]);
+
+    if (!res) {
+      const sql = fs.readFileSync(filePath, 'utf-8');
+      await query(sql);
+      await query('INSERT INTO _migrations VALUES (?)', [filePath]);
+
+      console.log(`Migration Ran: ${path.basename(filePath)}`);
+    }
+  });
 });
 
 client.on('interactionCreate', async (inteaction) => {

@@ -1,0 +1,1 @@
+ALTER TABLE users ADD commandsRan INT DEFAULT 0;
