@@ -29,7 +29,7 @@ exports.query = function (sql, variables = []) {
       con.query(sql, variables, (err, rows) => {
         if (err) return reject(err);
 
-        resolve(rows);
+        resolve(rows, con);
 
         con.release();
       });
