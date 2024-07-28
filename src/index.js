@@ -51,6 +51,7 @@ client.on('interactionCreate', async (inteaction) => {
 
     const command = commands.get(commandName);
 
+    // create a user account
     await queries.createUser(user.id);
 
     await command.run(client, inteaction);
